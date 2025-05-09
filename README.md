@@ -131,6 +131,29 @@ Before you begin, ensure you have the following installed and configured:
     You should see your demo app pods in a `Running` state.
 
 4.  **Access the Demo Application:**
+    ```bash
+      kubectl apply -f - <<EOF
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: demo-web-ingress
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+      spec:
+        ingressClassName: nginx
+        rules:
+        - http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: demo-web
+                  port:
+                    number: 80
+      EOF
+
+    ```
     Use the `EXTERNAL-IP` (DNS name) from the `ingress-nginx` service output in your browser. You should see your demo NGINX page or the "Hello Kubernetes" application.
 
 ## Outputs
