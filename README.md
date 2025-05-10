@@ -155,28 +155,21 @@ Before you begin, ensure you have the following installed and configured:
 
 
     kubectl apply -f - <<EOF
-      apiVersion: networking.k8s.io/v1
-      kind: Ingress
+      apiVersion: v1
+      kind: Service
       metadata:
-        name: grafana-ingress
+        name: grafana-direct
         namespace: monitoring
-        annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /
       spec:
-        ingressClassName: nginx
-        rules:
-        - http:
-            paths:
-            - path: /grafana
-              pathType: Prefix
-              backend:
-                service:
-                  name: prometheus-grafana
-                  port:
-                    number: 80
+        type: LoadBalancer
+        ports:
+          - port: 80
+            targetPort: 3000
+            protocol: TCP
+        selector:
+          app.kubernetes.io/instance: prometheus
+          app.kubernetes.io/name: grafana
       EOF
-
-
     ```
     Use the `EXTERNAL-IP` (DNS name) from the `ingress-nginx` service output in your browser. You should see your demo NGINX page or the "Hello Kubernetes" application.
 
