@@ -68,7 +68,10 @@ Before you begin, ensure you have the following installed and configured:
 
 ├── kubernetes-apps.tf   # Demo application (Deployment, Service, Ingress)
 
+├── monitoring.tf        # Grafana monitoring stack 
+
 └── README.md            # This file
+
 
 *(Note: You might have organized `helm.tf` and `kubernetes-apps.tf` content differently, e.g., all Kubernetes/Helm resources in one file after EKS is up.)*
 
@@ -154,6 +157,7 @@ Before you begin, ensure you have the following installed and configured:
       EOF
 
 
+
     kubectl apply -f - <<EOF
       apiVersion: v1
       kind: Service
@@ -172,6 +176,8 @@ Before you begin, ensure you have the following installed and configured:
       EOF
     ```
     Use the `EXTERNAL-IP` (DNS name) from the `ingress-nginx` service output in your browser. You should see your demo NGINX page or the "Hello Kubernetes" application.
+
+To access grafana use ```kubectl get svc grafana-direct -n monitoring``` and use the svc endpoint
 
 ## Outputs
 
